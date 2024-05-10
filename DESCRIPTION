@@ -2,18 +2,20 @@ Package: c4cp
 Type: Package
 Title: An analytics toolkit for Connect!
 Version: 0.1.0
-Author: 
-  - Rebecca Sansale
-  - Jake Peters
-Maintainer: The package maintainer <yourself@somewhere.net>
+Authors@R: 
+  c(person("Jake", "Peters", email = "jake.peters@nih.gov", role = c("cre","aut")),
+    person("Rebecca", "Sansale", email = "rebecca.sansale@nih.gov", role = c("aut")))
+Maintainer: Jake Peters <jake.peters@nih.gov>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 RoxygenNote: 7.3.1
-URL: https://analyticsphere.github.io/c4cp/
+URL: https://analyticsphere.github.io/c4cp/, https://github.com/Analyticsphere/c4cp
+Config/testthat/edition: 3
