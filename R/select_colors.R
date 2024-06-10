@@ -5,7 +5,7 @@
 #' @return A list of approved c4cp color palettes, each containing a vector
 #'  of color hex codes.
 #' @export
-#'
+#' @noRd
 #' @examples
 #' palettes <- color_palette()
 color_palette <- function(){
