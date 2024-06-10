@@ -20,3 +20,17 @@ install_github("Analyticsphere/c4cp")
 library(c4cp)
 ## basic example code
 ```
+
+## Adding Features to the Package
+
+In order to update the package, execute the following steps:
+
+1.  Within your branch,run:
+
+``` r
+devtools::document()
+pkgdown::build_site_github_pages()
+```
+
+2.  Push and merge your changes to Main
+3.  Create a pull request: Main -\> gh-pages
