@@ -1,0 +1,118 @@
+#' Aggregate Records by Specified Time Period
+#'
+#' Transforms a date column in a \code{dbplyr} table connected to BigQuery by truncating each date to the start of the specified period (week or month) and aggregates the data by counting the number of records in each period.
+#'
+#' @param tbl A \code{dbplyr} table object connected to BigQuery. Typically obtained using \code{tbl(con, "table_name")}.
+#' @param date_col A quoted or unquoted column name representing the date to be transformed and aggregated. Utilizes tidy evaluation for flexibility.
+#' @param period A character string specifying the aggregation period. Acceptable values are \code{"week"} and \code{"month"}. Defaults to \code{"week"}.
+#' @param week_start A character string indicating the starting day of the week when \code{period = "week"}. Acceptable values are \code{"MONDAY"} and \code{"SUNDAY"}. Defaults to \code{"MONDAY"}. This parameter is ignored when \code{period = "month"}.
+#'
+#' @return A \code{dbplyr} table object containing two columns:
+#' \describe{
+#'   \item{\code{period_start}}{The start date of the aggregation period (Monday for weeks or the first day of the month).}
+#'   \item{\code{num_records}}{The count of records within each aggregation period.}
+#' }
+#'
+#' @details
+#' The \code{count_by_period} function is designed to streamline the process of aggregating time-series data by specified periods. It leverages the \code{dplyr} and \code{dbplyr} packages to translate R code into optimized SQL queries compatible with BigQuery.
+#'
+#' \strong{Key Features:}
+#' \itemize{
+#'   \item **Flexible Aggregation:** Supports both weekly and monthly aggregations.
+#'   \item **Custom Week Start:** Allows specification of the week's starting day (Monday or Sunday) for weekly aggregations.
+#'   \item **Tidy Evaluation:** Accepts both quoted and unquoted column names for ease of use.
+#'   \item **Performance Optimized:** Designed to work efficiently with large datasets in BigQuery by translating operations into SQL.
+#' }
+#'
+#' \strong{Note:} Ensure that the \code{date_col} contains valid date values to prevent errors during the transformation process. The function automatically filters out \code{NULL} dates.
+#'
+#' @examples
+#' \dontrun{
+#' # Load necessary libraries
+#' library(dplyr)
+#' library(dbplyr)
+#' library(DBI)
+#' library(bigrquery)
+#'
+#' # Establish a connection to BigQuery
+#' project_id <- "your-project-id"
+#' dataset_id <- "your_dataset"
+#' con <- dbConnect(
+#'   bigrquery::bigquery(),
+#'   project = project_id,
+#'   dataset = dataset_id,
+#'   use_legacy_sql = FALSE
+#' )
+#'
+#' # Reference your BigQuery table
+#' your_table <- tbl(con, "your_table")
+#'
+#' # Aggregate counts by week (default settings)
+#' weekly_counts <- count_by_period(your_table, p.d_471593703)
+#' weekly_counts_local <- weekly_counts %>% collect()
+#' print(weekly_counts_local)
+#'
+#' # Aggregate counts by week starting on Sunday
+#' weekly_sunday_counts <- count_by_period(your_table, p.d_471593703, period = "week", week_start = "SUNDAY")
+#' weekly_sunday_counts_local <- weekly_sunday_counts %>% collect()
+#' print(weekly_sunday_counts_local)
+#'
+#' # Aggregate counts by month
+#' monthly_counts <- count_by_period(your_table, p.d_471593703, period = "month")
+#' monthly_counts_local <- monthly_counts %>% collect()
+#' print(monthly_counts_local)
+#' }
+#'
+#' @export
+count_by_period <- function(tbl, date_col, period = "week", week_start = "MONDAY") {
+  # Load necessary libraries
+  library(dplyr)
+  library(dbplyr)
+
+  # Validate the 'period' argument
+  valid_periods <- c("week", "month")
+  period <- tolower(period)
+  if (!(period %in% valid_periods)) {
+    stop("`period` must be either 'week' or 'month'")
+  }
+
+  # If period is 'week', validate the 'week_start' argument
+  if (period == "week") {
+    valid_starts <- c("MONDAY", "SUNDAY")
+    week_start <- toupper(week_start)
+    if (!(week_start %in% valid_starts)) {
+      stop("`week_start` must be either 'MONDAY' or 'SUNDAY'")
+    }
+  }
+
+  # Capture the date column using tidy evaluation
+  date_col <- enquo(date_col)
+
+  # Begin the transformation
+  tbl_transformed <- tbl %>%
+    filter(!is.na(!!date_col))  # Exclude NULL dates
+
+  # Apply transformations based on the specified period
+  if (period == "week") {
+    tbl_transformed <- tbl_transformed %>%
+      mutate(
+        period_start = DATE_TRUNC(!!date_col, WEEK(week_start))
+      )
+  } else if (period == "month") {
+    tbl_transformed <- tbl_transformed %>%
+      mutate(
+        period_start = DATE_TRUNC(!!date_col, MONTH)
+      )
+  }
+
+  # Group, summarize, and arrange the data
+  aggregated_data <- tbl_transformed %>%
+    group_by(period_start) %>%
+    summarise(
+      num_records = n(),
+      .groups = "drop"
+    ) %>%
+    arrange(period_start)
+
+  return(aggregated_data)
+}
