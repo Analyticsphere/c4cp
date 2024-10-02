@@ -4,7 +4,13 @@
 \alias{count_by_period}
 \title{Aggregate Records by Specified Time Period}
 \usage{
-count_by_period(tbl, date_col, period = "week", week_start = "MONDAY")
+count_by_period(
+  tbl,
+  date_col,
+  period = "week",
+  week_start = "MONDAY",
+  date_type = "string"
+)
 }
 \arguments{
 \item{tbl}{A \code{dbplyr} table object connected to BigQuery. Typically obtained using \code{tbl(con, "table_name")}.}
@@ -13,7 +19,9 @@ count_by_period(tbl, date_col, period = "week", week_start = "MONDAY")
 
 \item{period}{A character string specifying the aggregation period. Acceptable values are \code{"week"}, \code{"month"}, and \code{"quarter"}. Defaults to \code{"week"}.}
 
-\item{week_start}{A character string indicating the starting day of the week when \code{period = "week"}. Acceptable values are \code{"MONDAY"} and \code{"SUNDAY"}. Defaults to \code{"MONDAY"}. This parameter is ignored when \code{period = "month"} or \code{"quarter"}.}
+\item{week_start}{A character string indicating the starting day of the week when \code{period = "week"}. Acceptable values are \code{"MONDAY"} and \code{"SUNDAY"}. Defaults to \code{"MONDAY"}. This parameter is ignored when \code{period} is \code{"month"} or \code{"quarter"}.}
+
+\item{date_type}{A character string specifying the data type of the \code{date_col}. Acceptable values are \code{"string"} and \code{"timestamp"}. Defaults to \code{"string"}.}
 }
 \value{
 A \code{dbplyr} table object containing two columns:
@@ -40,15 +48,14 @@ The \code{count_by_period} function is designed to streamline the process of agg
 }
 \examples{
 \dontrun{
-# Load necessary libraries
 library(dplyr)
 library(dbplyr)
-library(DBI)
 library(bigrquery)
+library(DBI)
 
 # Establish a connection to BigQuery
-project_id <- "your-project-id"
-dataset_id <- "your_dataset"
+project_id <- "nih-nci-dceg-connect-stg-5519"
+dataset_id <- "FlatConnect"
 con <- dbConnect(
   bigrquery::bigquery(),
   project = project_id,
@@ -57,27 +64,48 @@ con <- dbConnect(
 )
 
 # Reference your BigQuery table
-your_table <- tbl(con, "your_table")
+your_table <- tbl(con, "FlatConnect.participants_JP")
 
-# Aggregate counts by week (default settings)
-weekly_counts <- count_by_period(your_table, p.d_471593703)
+# Aggregate counts by week
+weekly_counts <- count_by_period(
+  tbl = your_table,
+  date_col = d_471593703,
+  period = "week",
+  date_type = "string"
+)
 weekly_counts_local <- weekly_counts \%>\% collect()
 print(weekly_counts_local)
 
-# Aggregate counts by week starting on Sunday
-weekly_sunday_counts <- count_by_period(your_table, p.d_471593703, period = "week", week_start = "SUNDAY")
-weekly_sunday_counts_local <- weekly_sunday_counts \%>\% collect()
-print(weekly_sunday_counts_local)
-
 # Aggregate counts by month
-monthly_counts <- count_by_period(your_table, p.d_471593703, period = "month")
+monthly_counts <- count_by_period(
+  tbl = your_table,
+  date_col = d_471593703,
+  period = "month",
+  date_type = "string"
+)
 monthly_counts_local <- monthly_counts \%>\% collect()
 print(monthly_counts_local)
 
 # Aggregate counts by quarter
-quarterly_counts <- count_by_period(your_table, p.d_471593703, period = "quarter")
+quarterly_counts <- count_by_period(
+  tbl = your_table,
+  date_col = d_471593703,
+  period = "quarter",
+  date_type = "string"
+)
 quarterly_counts_local <- quarterly_counts \%>\% collect()
 print(quarterly_counts_local)
+
+# Aggregate counts by week starting on Sunday
+weekly_sunday_counts <- count_by_period(
+  tbl = your_table,
+  date_col = d_471593703,
+  period = "week",
+  week_start = "SUNDAY",
+  date_type = "string"
+)
+weekly_sunday_counts_local <- weekly_sunday_counts \%>\% collect()
+print(weekly_sunday_counts_local)
 }
 
 }
