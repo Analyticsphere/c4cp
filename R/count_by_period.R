@@ -1,15 +1,15 @@
 #' Aggregate Records by Specified Time Period
 #'
-#' Transforms a date column in a \code{dbplyr} table connected to BigQuery by truncating each date to the start of the specified period (week or month) and aggregates the data by counting the number of records in each period.
+#' Transforms a date column in a \code{dbplyr} table connected to BigQuery by truncating each date to the start of the specified period (week, month, or quarter) and aggregates the data by counting the number of records in each period.
 #'
 #' @param tbl A \code{dbplyr} table object connected to BigQuery. Typically obtained using \code{tbl(con, "table_name")}.
 #' @param date_col A quoted or unquoted column name representing the date to be transformed and aggregated. Utilizes tidy evaluation for flexibility.
-#' @param period A character string specifying the aggregation period. Acceptable values are \code{"week"} and \code{"month"}. Defaults to \code{"week"}.
-#' @param week_start A character string indicating the starting day of the week when \code{period = "week"}. Acceptable values are \code{"MONDAY"} and \code{"SUNDAY"}. Defaults to \code{"MONDAY"}. This parameter is ignored when \code{period = "month"}.
+#' @param period A character string specifying the aggregation period. Acceptable values are \code{"week"}, \code{"month"}, and \code{"quarter"}. Defaults to \code{"week"}.
+#' @param week_start A character string indicating the starting day of the week when \code{period = "week"}. Acceptable values are \code{"MONDAY"} and \code{"SUNDAY"}. Defaults to \code{"MONDAY"}. This parameter is ignored when \code{period = "month"} or \code{"quarter"}.
 #'
 #' @return A \code{dbplyr} table object containing two columns:
 #' \describe{
-#'   \item{\code{period_start}}{The start date of the aggregation period (Monday for weeks or the first day of the month).}
+#'   \item{\code{period_start}}{The start date of the aggregation period (Monday for weeks, the first day of the month for months, and the first day of the quarter for quarters).}
 #'   \item{\code{num_records}}{The count of records within each aggregation period.}
 #' }
 #'
@@ -18,7 +18,7 @@
 #'
 #' \strong{Key Features:}
 #' \itemize{
-#'   \item **Flexible Aggregation:** Supports both weekly and monthly aggregations.
+#'   \item **Flexible Aggregation:** Supports weekly, monthly, and quarterly aggregations.
 #'   \item **Custom Week Start:** Allows specification of the week's starting day (Monday or Sunday) for weekly aggregations.
 #'   \item **Tidy Evaluation:** Accepts both quoted and unquoted column names for ease of use.
 #'   \item **Performance Optimized:** Designed to work efficiently with large datasets in BigQuery by translating operations into SQL.
@@ -61,6 +61,11 @@
 #' monthly_counts <- count_by_period(your_table, p.d_471593703, period = "month")
 #' monthly_counts_local <- monthly_counts %>% collect()
 #' print(monthly_counts_local)
+#'
+#' # Aggregate counts by quarter
+#' quarterly_counts <- count_by_period(your_table, p.d_471593703, period = "quarter")
+#' quarterly_counts_local <- quarterly_counts %>% collect()
+#' print(quarterly_counts_local)
 #' }
 #'
 #' @export
@@ -70,10 +75,10 @@ count_by_period <- function(tbl, date_col, period = "week", week_start = "MONDAY
   library(dbplyr)
 
   # Validate the 'period' argument
-  valid_periods <- c("week", "month")
+  valid_periods <- c("week", "month", "quarter")
   period <- tolower(period)
   if (!(period %in% valid_periods)) {
-    stop("`period` must be either 'week' or 'month'")
+    stop("`period` must be one of 'week', 'month', or 'quarter'")
   }
 
   # If period is 'week', validate the 'week_start' argument
@@ -102,6 +107,11 @@ count_by_period <- function(tbl, date_col, period = "week", week_start = "MONDAY
     tbl_transformed <- tbl_transformed %>%
       mutate(
         period_start = DATE_TRUNC(!!date_col, MONTH)
+      )
+  } else if (period == "quarter") {
+    tbl_transformed <- tbl_transformed %>%
+      mutate(
+        period_start = DATE_TRUNC(!!date_col, QUARTER)
       )
   }
 
