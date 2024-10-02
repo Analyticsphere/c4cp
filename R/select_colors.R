@@ -10,13 +10,13 @@
 #' palettes <- color_palette()
 color_palette <- function(){
   c <- list(
-    blue = c("#2973A5", "#648EB4", "#8BAAC7", "#B1C7D9", "#D8E3EC"),
+    blue =     c("#2973A5", "#648EB4", "#8BAAC7", "#B1C7D9", "#D8E3EC"),
     darkblue = c("#164C71", "#51708A", "#7C94A8", "#A8B7C5", "#D3DBE2"),
-    yellow = c("#FDBE19", "#F6CC6C", "#F8D991", "#FBE5B5", "#FDF2DA"),
-    skyblue = c("#309EBD", "#74B0C7", "#97C4D5", "#B9D7E3", "#DDECF1"),
-    turq = c("#3C989E", "#77ACB0", "#99C0C4", "#BBD5D7", "#DDEAEC"),
-    grey = c("#565C65", "#797D83", "#9A9DA3", "#BBBEC1", "#DDDEE0"),
-    brown = c("#CC7D15", "#CD995B", "#DAB384", "#E7CCAD", "#F3E6D6")
+    yellow =   c("#FDBE19", "#F6CC6C", "#F8D991", "#FBE5B5", "#FDF2DA"),
+    skyblue =  c("#309EBD", "#74B0C7", "#97C4D5", "#B9D7E3", "#DDECF1"),
+    turq =     c("#3C989E", "#77ACB0", "#99C0C4", "#BBD5D7", "#DDEAEC"),
+    grey =     c("#565C65", "#797D83", "#9A9DA3", "#BBBEC1", "#DDDEE0"),
+    brown =    c("#CC7D15", "#CD995B", "#DAB384", "#E7CCAD", "#F3E6D6")
   )
 }
 
