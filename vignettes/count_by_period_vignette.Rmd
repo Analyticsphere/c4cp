@@ -40,12 +40,7 @@ con <- dbConnect(
   dataset = dataset_id,
   use_legacy_sql = FALSE
 )
-```
 
-## Referencing Your BigQuery Table
-Use the tbl() function from dbplyr to reference your BigQuery table.
-
-```
 # Reference the 'participants_JP' table in the 'FlatConnect' dataset
 your_table <- tbl(con, "FlatConnect.participants_JP")
 ```
@@ -68,14 +63,44 @@ weekly_counts_local <- weekly_counts %>% collect()
 # View the aggregated weekly counts
 print(weekly_counts_local)
 ```
-##### Example Output: 
-| **period_start** | **num_records** |
-|---|---|
-| 2021-07-19 00:00:00 | 10 |
-| 2021-07-26 00:00:00 | 15 |
-| 2021-08-02 00:00:00 | 20 |
-| ... | ... |
 
+##### Example Output: 
+```r
+# A tibble: 109 × 2
+   period_start        num_records
+   <dttm>                    <int>
+ 1 2022-05-30 00:00:00           8
+ 2 2022-06-06 00:00:00          15
+ 3 2022-06-13 00:00:00          31
+ 4 2022-06-20 00:00:00           7
+ 5 2022-06-27 00:00:00          14
+ 6 2022-07-04 00:00:00          30
+ 7 2022-07-11 00:00:00          26
+ 8 2022-07-18 00:00:00          10
+ 9 2022-07-25 00:00:00          12
+10 2022-08-01 00:00:00           2
+# ℹ 99 more rows
+# ℹ Use `print(n = ...)` to see more rows
+```
+
+#### Show the SQL Query that was Generated
+```r
+weekly_counts %>% show_query()
+```
+
+```sql
+<SQL>
+SELECT `period_start`, count(*) AS `num_records`
+FROM (
+  SELECT
+    `d_471593703`,
+    TIMESTAMP_TRUNC(CAST(`d_471593703` AS TIMESTAMP), WEEK(MONDAY)) AS `period_start`
+  FROM `FlatConnect.participants_JP`
+  WHERE (NOT((`d_471593703` IS NULL)))
+) `q01`
+GROUP BY `period_start`
+ORDER BY `period_start`
+```
 
 ## Aggregating Counts by Month
 Aggregate the number of records by month.
@@ -85,8 +110,7 @@ Aggregate the number of records by month.
 monthly_counts <- count_by_period(
   tbl = your_table,
   date_col = d_471593703,
-  period = "month",
-  date_type = "string"
+  period = "month"
 )
 
 # Collect the results into R
@@ -95,13 +119,25 @@ monthly_counts_local <- monthly_counts %>% collect()
 # View the aggregated monthly counts
 print(monthly_counts_local)
 ```
+
 ##### Example Output: 
-| **period_start** | **num_records** |
-|---|---|
-| 2021-07-01 00:00:00 | 25 |
-| 2021-08-01 00:00:00 | 30 |
-| 2021-09-01 00:00:00 | 35 |
-| ... | ... |
+```r
+# A tibble: 29 × 2
+   period_start        num_records
+   <dttm>                    <int>
+ 1 2022-06-01 00:00:00          70
+ 2 2022-07-01 00:00:00          83
+ 3 2022-08-01 00:00:00          29
+ 4 2022-09-01 00:00:00          48
+ 5 2022-10-01 00:00:00          65
+ 6 2022-11-01 00:00:00         171
+ 7 2022-12-01 00:00:00         192
+ 8 2023-01-01 00:00:00          20
+ 9 2023-02-01 00:00:00          31
+10 2023-03-01 00:00:00          93
+# ℹ 19 more rows
+# ℹ Use `print(n = ...)` to see more rows
+```
 
 ## Aggregating Counts by Quarter
 Aggregate the number of records by quarter.
@@ -111,8 +147,7 @@ Aggregate the number of records by quarter.
 quarterly_counts <- count_by_period(
   tbl = your_table,
   date_col = d_471593703,
-  period = "quarter",
-  date_type = "string"
+  period = "quarter"
 )
 
 # Collect the results into R
@@ -124,12 +159,22 @@ print(quarterly_counts_local)
 
 ##### Example Output:
 
-| **period_start** | **num_records** |
-|---|---|
-| 2021-07-01 00:00:00 |  50 |
-| 2021-10-01 00:00:00 | 65 |
-| 2022-01-01 00:00:00 | 70 |
-| ... | ... |
+```r
+# A tibble: 11 × 2
+   period_start        num_records
+   <dttm>                    <int>
+ 1 2022-04-01 00:00:00          70
+ 2 2022-07-01 00:00:00         160
+ 3 2022-10-01 00:00:00         428
+ 4 2023-01-01 00:00:00         144
+ 5 2023-04-01 00:00:00         141
+ 6 2023-07-01 00:00:00         114
+ 7 2023-10-01 00:00:00         191
+ 8 2024-01-01 00:00:00         172
+ 9 2024-04-01 00:00:00         115
+10 2024-07-01 00:00:00         121
+11 2024-10-01 00:00:00           2
+```
 
 ## Aggregating Counts by Week Starting on Sunday
 Customize the aggregation to have weeks start on Sunday instead of the default Monday.
@@ -140,8 +185,7 @@ weekly_sunday_counts <- count_by_period(
   tbl = your_table,
   date_col = d_471593703,
   period = "week",
-  week_start = "SUNDAY",
-  date_type = "string"
+  week_start = "SUNDAY"
 )
 
 # Collect the results into R
@@ -152,9 +196,20 @@ print(weekly_sunday_counts_local)
 ```
 
 ##### Example Output
-| **period_start** |	num_records |
-|---|---|
-| 2021-07-18 00:00:00 |	8 |
-| 2021-07-25 00:00:00 |	12 |
-| 2021-08-0100:00:00 | 18 |
-| ... | ... |
+```r
+# A tibble: 109 × 2
+   period_start        num_records
+   <dttm>                    <int>
+ 1 2022-05-29 00:00:00           8
+ 2 2022-06-05 00:00:00          15
+ 3 2022-06-12 00:00:00          31
+ 4 2022-06-19 00:00:00           7
+ 5 2022-06-26 00:00:00          14
+ 6 2022-07-03 00:00:00          30
+ 7 2022-07-10 00:00:00          26
+ 8 2022-07-17 00:00:00          10
+ 9 2022-07-24 00:00:00          12
+10 2022-07-31 00:00:00           2
+# ℹ 99 more rows
+# ℹ Use `print(n = ...)` to see more rows
+```
