@@ -90,7 +90,6 @@
 #' }
 #'
 #' @export
-
 count_by_period <- function(tbl, date_col, period = "week", week_start = "MONDAY", date_type = "string") {
   # Validate 'period' argument
   valid_periods <- c("week", "month", "quarter")
@@ -119,9 +118,10 @@ count_by_period <- function(tbl, date_col, period = "week", week_start = "MONDAY
   date_col_sym <- ensym(date_col)
   date_col_name <- as_string(date_col_sym)
 
-  # Begin transformation: filter out NULL dates
+  # Begin transformation: filter out NULL dates and select only the date column
   tbl_transformed <- tbl %>%
-    filter(!is.na(!!date_col_sym))
+    filter(!is.na(!!date_col_sym)) %>%
+    select(!!date_col_sym)
 
   # Conditionally cast 'date_col' to TIMESTAMP if it's a string
   if (date_type == "string") {
@@ -157,4 +157,3 @@ count_by_period <- function(tbl, date_col, period = "week", week_start = "MONDAY
 
   return(tbl_aggregated)
 }
-
