@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-This vignette demonstrates how to use the `count_by_period` function to aggregate recruitment data by specified time periods (week, month, or quarter) using a BigQuery dataset connected via **dbplyr**.
+This vignette demonstrates how to use the `count_by_period` function to aggregate data by specified time periods (week, month, or quarter) using a BigQuery dataset connected via **dbplyr**.
 
 ## Prerequisites
 
