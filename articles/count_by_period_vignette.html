@@ -277,16 +277,30 @@ the default Monday.</p>
 birth month<a class="anchor" aria-label="anchor" href="#aggregate-counts-by-week-starting-on-sunday-grouping-by-site-and-birth-month"></a>
 </h2>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span> <span class="va">weekly_counts_by_site_birth_month</span> <span class="op">&lt;-</span> </span>
+<code class="sourceCode R"><span> <span class="va">weekly_counts_by_site_birth_month</span> <span class="op">&lt;-</span> <span class="va">your_table</span> <span class="op">%&gt;%</span></span>
+<span>     <span class="fu">mutate</span><span class="op">(</span></span>
+<span>       RcrtSI_TypeTime_v1r0 <span class="op">=</span> <span class="va">d_471593703</span>,</span>
+<span>       birth_month <span class="op">=</span> <span class="va">d_564964481</span>,</span>
+<span>       site <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span></span>
+<span>        <span class="va">d_827220437</span> <span class="op">==</span> <span class="st">"531629870"</span> <span class="op">~</span> <span class="st">"HP"</span>,</span>
+<span>        <span class="va">d_827220437</span> <span class="op">==</span> <span class="st">"548392715"</span> <span class="op">~</span> <span class="st">"HF"</span>,</span>
+<span>        <span class="va">d_827220437</span> <span class="op">==</span> <span class="st">"125001209"</span> <span class="op">~</span> <span class="st">"KPCO"</span>,</span>
+<span>        <span class="va">d_827220437</span> <span class="op">==</span> <span class="st">"327912200"</span> <span class="op">~</span> <span class="st">"KPGA"</span>,</span>
+<span>        <span class="va">d_827220437</span> <span class="op">==</span> <span class="st">"300267574"</span> <span class="op">~</span> <span class="st">"KPHI"</span>,</span>
+<span>        <span class="va">d_827220437</span> <span class="op">==</span> <span class="st">"452412599"</span> <span class="op">~</span> <span class="st">"KPNW"</span>,</span>
+<span>        <span class="va">d_827220437</span> <span class="op">==</span> <span class="st">"303349821"</span> <span class="op">~</span> <span class="st">"MARSH"</span>,</span>
+<span>        <span class="va">d_827220437</span> <span class="op">==</span> <span class="st">"657167265"</span> <span class="op">~</span> <span class="st">"SANF"</span>,</span>
+<span>        <span class="va">d_827220437</span> <span class="op">==</span> <span class="st">"809703864"</span> <span class="op">~</span> <span class="st">"UCHI"</span>,</span>
+<span>        <span class="va">d_827220437</span> <span class="op">==</span> <span class="st">"472940358"</span> <span class="op">~</span> <span class="st">"BSWH"</span>,</span>
+<span>        <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"Other"</span> </span>
+<span>    <span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>    <span class="fu"><a href="../reference/count_by_period.html">count_by_period</a></span><span class="op">(</span></span>
-<span>       tbl <span class="op">=</span> <span class="va">your_table</span>,</span>
-<span>       date_col <span class="op">=</span> <span class="st">"d_471593703"</span>,</span>
+<span>       date_col <span class="op">=</span> <span class="st">"RcrtSI_TypeTime_v1r0"</span>,</span>
 <span>       period <span class="op">=</span> <span class="st">"week"</span>,</span>
 <span>       week_start <span class="op">=</span> <span class="st">"SUNDAY"</span>,</span>
 <span>       date_type <span class="op">=</span> <span class="st">"string"</span>,</span>
-<span>       group_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d_827220437"</span>, <span class="st">"d_564964481"</span><span class="op">)</span></span>
+<span>       group_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"site"</span>, <span class="st">"birth_month"</span><span class="op">)</span></span>
 <span>     <span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>     <span class="fu">rename</span><span class="op">(</span>site <span class="op">=</span> <span class="va">d_827220437</span>, birth_month <span class="op">=</span> <span class="va">d_564964481</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>     <span class="fu">show_query</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>     <span class="fu">collect</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>     <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -294,41 +308,53 @@ birth month<a class="anchor" aria-label="anchor" href="#aggregate-counts-by-week
 <h4 id="example-output-4">Example Output<a class="anchor" aria-label="anchor" href="#example-output-4"></a>
 </h4>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="sc">&lt;</span>SQL<span class="sc">&gt;</span></span>
-<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>SELECT</span>
-<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  <span class="st">`</span><span class="at">period_start</span><span class="st">`</span>,</span>
-<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>  <span class="st">`</span><span class="at">d_827220437</span><span class="st">`</span> AS <span class="st">`</span><span class="at">site</span><span class="st">`</span>,</span>
-<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>  <span class="st">`</span><span class="at">d_564964481</span><span class="st">`</span> AS <span class="st">`</span><span class="at">birth_month</span><span class="st">`</span>,</span>
-<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>  <span class="fu">count</span>(<span class="sc">*</span>) AS <span class="st">`</span><span class="at">num_records</span><span class="st">`</span></span>
-<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a><span class="fu">FROM</span> (</span>
-<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>  SELECT</span>
-<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a>    <span class="st">`</span><span class="at">d_471593703</span><span class="st">`</span>,</span>
-<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a>    <span class="st">`</span><span class="at">d_827220437</span><span class="st">`</span>,</span>
-<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a>    <span class="st">`</span><span class="at">d_564964481</span><span class="st">`</span>,</span>
-<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a>    <span class="fu">TIMESTAMP_TRUNC</span>(<span class="fu">CAST</span>(<span class="st">`</span><span class="at">d_471593703</span><span class="st">`</span> AS TIMESTAMP), <span class="fu">WEEK</span>(SUNDAY)) AS <span class="st">`</span><span class="at">period_start</span><span class="st">`</span></span>
-<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a>  FROM <span class="st">`</span><span class="at">FlatConnect.participants_JP</span><span class="st">`</span></span>
-<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a>  <span class="fu">WHERE</span> (<span class="fu">NOT</span>((<span class="st">`</span><span class="at">d_471593703</span><span class="st">`</span> IS <span class="cn">NULL</span>)))</span>
-<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a>) <span class="st">`</span><span class="at">q01</span><span class="st">`</span></span>
-<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a>GROUP BY <span class="st">`</span><span class="at">period_start</span><span class="st">`</span>, <span class="st">`</span><span class="at">d_827220437</span><span class="st">`</span>, <span class="st">`</span><span class="at">d_564964481</span><span class="st">`</span></span>
-<span id="cb14-17"><a href="#cb14-17" tabindex="-1"></a>ORDER BY <span class="st">`</span><span class="at">period_start</span><span class="st">`</span></span>
-<span id="cb14-18"><a href="#cb14-18" tabindex="-1"></a>Job complete</span>
-<span id="cb14-19"><a href="#cb14-19" tabindex="-1"></a>Billed<span class="sc">:</span> <span class="dv">0</span> B</span>
-<span id="cb14-20"><a href="#cb14-20" tabindex="-1"></a>Downloading first chunk of data.</span>
-<span id="cb14-21"><a href="#cb14-21" tabindex="-1"></a>First chunk includes all requested rows.</span>
-<span id="cb14-22"><a href="#cb14-22" tabindex="-1"></a><span class="co"># A tibble: 747 × 4</span></span>
-<span id="cb14-23"><a href="#cb14-23" tabindex="-1"></a>   period_start        site      birth_month num_records</span>
-<span id="cb14-24"><a href="#cb14-24" tabindex="-1"></a>   <span class="sc">&lt;</span>dttm<span class="sc">&gt;</span>              <span class="er">&lt;</span>chr<span class="sc">&gt;</span>     <span class="er">&lt;</span>chr<span class="sc">&gt;</span>             <span class="er">&lt;</span>int<span class="sc">&gt;</span></span>
-<span id="cb14-25"><a href="#cb14-25" tabindex="-1"></a> <span class="dv">1</span> <span class="dv">2022-05-29</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> <span class="dv">531629870</span> <span class="dv">03</span>                    <span class="dv">1</span></span>
-<span id="cb14-26"><a href="#cb14-26" tabindex="-1"></a> <span class="dv">2</span> <span class="dv">2022-05-29</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> <span class="dv">303349821</span> <span class="dv">05</span>                    <span class="dv">1</span></span>
-<span id="cb14-27"><a href="#cb14-27" tabindex="-1"></a> <span class="dv">3</span> <span class="dv">2022-05-29</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> <span class="dv">303349821</span> <span class="dv">01</span>                    <span class="dv">2</span></span>
-<span id="cb14-28"><a href="#cb14-28" tabindex="-1"></a> <span class="dv">4</span> <span class="dv">2022-05-29</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> <span class="dv">531629870</span> <span class="dv">11</span>                    <span class="dv">1</span></span>
-<span id="cb14-29"><a href="#cb14-29" tabindex="-1"></a> <span class="dv">5</span> <span class="dv">2022-05-29</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> <span class="dv">303349821</span> <span class="dv">08</span>                    <span class="dv">1</span></span>
-<span id="cb14-30"><a href="#cb14-30" tabindex="-1"></a> <span class="dv">6</span> <span class="dv">2022-05-29</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> <span class="dv">531629870</span> <span class="dv">04</span>                    <span class="dv">1</span></span>
-<span id="cb14-31"><a href="#cb14-31" tabindex="-1"></a> <span class="dv">7</span> <span class="dv">2022-05-29</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> <span class="dv">531629870</span> <span class="dv">10</span>                    <span class="dv">1</span></span>
-<span id="cb14-32"><a href="#cb14-32" tabindex="-1"></a> <span class="dv">8</span> <span class="dv">2022-06-05</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> <span class="dv">657167265</span> <span class="cn">NA</span>                    <span class="dv">1</span></span>
-<span id="cb14-33"><a href="#cb14-33" tabindex="-1"></a> <span class="dv">9</span> <span class="dv">2022-06-05</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> <span class="dv">657167265</span> <span class="dv">01</span>                    <span class="dv">2</span></span>
-<span id="cb14-34"><a href="#cb14-34" tabindex="-1"></a><span class="dv">10</span> <span class="dv">2022-06-05</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> <span class="dv">548392715</span> <span class="dv">07</span>                    <span class="dv">1</span></span>
-<span id="cb14-35"><a href="#cb14-35" tabindex="-1"></a><span class="co"># ℹ 737 more rows</span></span>
-<span id="cb14-36"><a href="#cb14-36" tabindex="-1"></a><span class="co"># ℹ Use `print(n = ...)` to see more rows</span></span></code></pre></div>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>SELECT <span class="st">`</span><span class="at">period_start</span><span class="st">`</span>, <span class="st">`</span><span class="at">site</span><span class="st">`</span>, <span class="st">`</span><span class="at">birth_month</span><span class="st">`</span>, <span class="fu">count</span>(<span class="sc">*</span>) AS <span class="st">`</span><span class="at">num_records</span><span class="st">`</span></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="fu">FROM</span> (</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>  SELECT</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>    <span class="st">`</span><span class="at">q01</span><span class="st">`</span>.<span class="sc">*</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>    <span class="fu">TIMESTAMP_TRUNC</span>(<span class="fu">CAST</span>(<span class="st">`</span><span class="at">RcrtSI_TypeTime_v1r0</span><span class="st">`</span> AS TIMESTAMP), <span class="fu">WEEK</span>(SUNDAY)) AS <span class="st">`</span><span class="at">period_start</span><span class="st">`</span></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>  <span class="fu">FROM</span> (</span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>    SELECT</span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a>      <span class="st">`</span><span class="at">d_471593703</span><span class="st">`</span> AS <span class="st">`</span><span class="at">RcrtSI_TypeTime_v1r0</span><span class="st">`</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a>      CASE</span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a>        <span class="fu">WHEN</span> (<span class="st">`</span><span class="at">d_827220437</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'531629870'</span>) THEN <span class="st">'HP'</span></span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a>        <span class="fu">WHEN</span> (<span class="st">`</span><span class="at">d_827220437</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'548392715'</span>) THEN <span class="st">'HF'</span></span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a>        <span class="fu">WHEN</span> (<span class="st">`</span><span class="at">d_827220437</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'125001209'</span>) THEN <span class="st">'KPCO'</span></span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a>        <span class="fu">WHEN</span> (<span class="st">`</span><span class="at">d_827220437</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'327912200'</span>) THEN <span class="st">'KPGA'</span></span>
+<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a>        <span class="fu">WHEN</span> (<span class="st">`</span><span class="at">d_827220437</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'300267574'</span>) THEN <span class="st">'KPHI'</span></span>
+<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a>        <span class="fu">WHEN</span> (<span class="st">`</span><span class="at">d_827220437</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'452412599'</span>) THEN <span class="st">'KPNW'</span></span>
+<span id="cb14-17"><a href="#cb14-17" tabindex="-1"></a>        <span class="fu">WHEN</span> (<span class="st">`</span><span class="at">d_827220437</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'303349821'</span>) THEN <span class="st">'MARSH'</span></span>
+<span id="cb14-18"><a href="#cb14-18" tabindex="-1"></a>        <span class="fu">WHEN</span> (<span class="st">`</span><span class="at">d_827220437</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'657167265'</span>) THEN <span class="st">'SANF'</span></span>
+<span id="cb14-19"><a href="#cb14-19" tabindex="-1"></a>        <span class="fu">WHEN</span> (<span class="st">`</span><span class="at">d_827220437</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'809703864'</span>) THEN <span class="st">'UCHI'</span></span>
+<span id="cb14-20"><a href="#cb14-20" tabindex="-1"></a>        <span class="fu">WHEN</span> (<span class="st">`</span><span class="at">d_827220437</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'472940358'</span>) THEN <span class="st">'BSWH'</span></span>
+<span id="cb14-21"><a href="#cb14-21" tabindex="-1"></a>        ELSE <span class="st">'Other'</span></span>
+<span id="cb14-22"><a href="#cb14-22" tabindex="-1"></a>      END AS <span class="st">`</span><span class="at">site</span><span class="st">`</span>,</span>
+<span id="cb14-23"><a href="#cb14-23" tabindex="-1"></a>      <span class="st">`</span><span class="at">d_564964481</span><span class="st">`</span> AS <span class="st">`</span><span class="at">birth_month</span><span class="st">`</span></span>
+<span id="cb14-24"><a href="#cb14-24" tabindex="-1"></a>    FROM <span class="st">`</span><span class="at">FlatConnect.participants_JP</span><span class="st">`</span></span>
+<span id="cb14-25"><a href="#cb14-25" tabindex="-1"></a>    <span class="fu">WHERE</span> (<span class="fu">NOT</span>((<span class="st">`</span><span class="at">d_471593703</span><span class="st">`</span> IS <span class="cn">NULL</span>)))</span>
+<span id="cb14-26"><a href="#cb14-26" tabindex="-1"></a>  ) <span class="st">`</span><span class="at">q01</span><span class="st">`</span></span>
+<span id="cb14-27"><a href="#cb14-27" tabindex="-1"></a>) <span class="st">`</span><span class="at">q01</span><span class="st">`</span></span>
+<span id="cb14-28"><a href="#cb14-28" tabindex="-1"></a>GROUP BY <span class="st">`</span><span class="at">period_start</span><span class="st">`</span>, <span class="st">`</span><span class="at">site</span><span class="st">`</span>, <span class="st">`</span><span class="at">birth_month</span><span class="st">`</span></span>
+<span id="cb14-29"><a href="#cb14-29" tabindex="-1"></a>ORDER BY <span class="st">`</span><span class="at">period_start</span><span class="st">`</span></span>
+<span id="cb14-30"><a href="#cb14-30" tabindex="-1"></a>Job complete</span>
+<span id="cb14-31"><a href="#cb14-31" tabindex="-1"></a>Billed<span class="sc">:</span> <span class="fl">10.49</span> MB</span>
+<span id="cb14-32"><a href="#cb14-32" tabindex="-1"></a>Downloading first chunk of data.</span>
+<span id="cb14-33"><a href="#cb14-33" tabindex="-1"></a>First chunk includes all requested rows.</span>
+<span id="cb14-34"><a href="#cb14-34" tabindex="-1"></a><span class="co"># A tibble: 747 × 4</span></span>
+<span id="cb14-35"><a href="#cb14-35" tabindex="-1"></a>   period_start        site  birth_month num_records</span>
+<span id="cb14-36"><a href="#cb14-36" tabindex="-1"></a>   <span class="sc">&lt;</span>dttm<span class="sc">&gt;</span>              <span class="er">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span>             <span class="er">&lt;</span>int<span class="sc">&gt;</span></span>
+<span id="cb14-37"><a href="#cb14-37" tabindex="-1"></a> <span class="dv">1</span> <span class="dv">2022-05-29</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> HP    <span class="dv">03</span>                    <span class="dv">1</span></span>
+<span id="cb14-38"><a href="#cb14-38" tabindex="-1"></a> <span class="dv">2</span> <span class="dv">2022-05-29</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> MARSH <span class="dv">05</span>                    <span class="dv">1</span></span>
+<span id="cb14-39"><a href="#cb14-39" tabindex="-1"></a> <span class="dv">3</span> <span class="dv">2022-05-29</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> MARSH <span class="dv">01</span>                    <span class="dv">2</span></span>
+<span id="cb14-40"><a href="#cb14-40" tabindex="-1"></a> <span class="dv">4</span> <span class="dv">2022-05-29</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> HP    <span class="dv">11</span>                    <span class="dv">1</span></span>
+<span id="cb14-41"><a href="#cb14-41" tabindex="-1"></a> <span class="dv">5</span> <span class="dv">2022-05-29</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> MARSH <span class="dv">08</span>                    <span class="dv">1</span></span>
+<span id="cb14-42"><a href="#cb14-42" tabindex="-1"></a> <span class="dv">6</span> <span class="dv">2022-05-29</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> HP    <span class="dv">04</span>                    <span class="dv">1</span></span>
+<span id="cb14-43"><a href="#cb14-43" tabindex="-1"></a> <span class="dv">7</span> <span class="dv">2022-05-29</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> HP    <span class="dv">10</span>                    <span class="dv">1</span></span>
+<span id="cb14-44"><a href="#cb14-44" tabindex="-1"></a> <span class="dv">8</span> <span class="dv">2022-06-05</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> SANF  <span class="cn">NA</span>                    <span class="dv">1</span></span>
+<span id="cb14-45"><a href="#cb14-45" tabindex="-1"></a> <span class="dv">9</span> <span class="dv">2022-06-05</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> SANF  <span class="dv">01</span>                    <span class="dv">2</span></span>
+<span id="cb14-46"><a href="#cb14-46" tabindex="-1"></a><span class="dv">10</span> <span class="dv">2022-06-05</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span> HF    <span class="dv">07</span>                    <span class="dv">1</span></span>
+<span id="cb14-47"><a href="#cb14-47" tabindex="-1"></a><span class="co"># ℹ 737 more rows</span></span>
+<span id="cb14-48"><a href="#cb14-48" tabindex="-1"></a><span class="co"># ℹ Use `print(n = ...)` to see more rows</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
