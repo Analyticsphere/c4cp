@@ -218,16 +218,30 @@ print(weekly_sunday_counts_local)
 
 ## Aggregate counts by week starting on Sunday, grouping by site and birth month
 ```r
- weekly_counts_by_site_birth_month <- 
+ weekly_counts_by_site_birth_month <- your_table %>%
+     mutate(
+       RcrtSI_TypeTime_v1r0 = d_471593703,
+       birth_month = d_564964481,
+       site = case_when(
+        d_827220437 == "531629870" ~ "HP",
+        d_827220437 == "548392715" ~ "HF",
+        d_827220437 == "125001209" ~ "KPCO",
+        d_827220437 == "327912200" ~ "KPGA",
+        d_827220437 == "300267574" ~ "KPHI",
+        d_827220437 == "452412599" ~ "KPNW",
+        d_827220437 == "303349821" ~ "MARSH",
+        d_827220437 == "657167265" ~ "SANF",
+        d_827220437 == "809703864" ~ "UCHI",
+        d_827220437 == "472940358" ~ "BSWH",
+        TRUE ~ "Other" 
+    )) %>%
     count_by_period(
-       tbl = your_table,
-       date_col = "d_471593703",
+       date_col = "RcrtSI_TypeTime_v1r0",
        period = "week",
        week_start = "SUNDAY",
        date_type = "string",
-       group_vars = c("d_827220437", "d_564964481")
+       group_vars = c("site", "birth_month")
      ) %>% 
-     rename(site = d_827220437, birth_month = d_564964481) %>%
      show_query() %>%
      collect() %>%
      print()
@@ -236,39 +250,51 @@ print(weekly_sunday_counts_local)
 #### Example Output
 ```r
 <SQL>
-SELECT
-  `period_start`,
-  `d_827220437` AS `site`,
-  `d_564964481` AS `birth_month`,
-  count(*) AS `num_records`
+SELECT `period_start`, `site`, `birth_month`, count(*) AS `num_records`
 FROM (
   SELECT
-    `d_471593703`,
-    `d_827220437`,
-    `d_564964481`,
-    TIMESTAMP_TRUNC(CAST(`d_471593703` AS TIMESTAMP), WEEK(SUNDAY)) AS `period_start`
-  FROM `FlatConnect.participants_JP`
-  WHERE (NOT((`d_471593703` IS NULL)))
+    `q01`.*,
+    TIMESTAMP_TRUNC(CAST(`RcrtSI_TypeTime_v1r0` AS TIMESTAMP), WEEK(SUNDAY)) AS `period_start`
+  FROM (
+    SELECT
+      `d_471593703` AS `RcrtSI_TypeTime_v1r0`,
+      CASE
+        WHEN (`d_827220437` = '531629870') THEN 'HP'
+        WHEN (`d_827220437` = '548392715') THEN 'HF'
+        WHEN (`d_827220437` = '125001209') THEN 'KPCO'
+        WHEN (`d_827220437` = '327912200') THEN 'KPGA'
+        WHEN (`d_827220437` = '300267574') THEN 'KPHI'
+        WHEN (`d_827220437` = '452412599') THEN 'KPNW'
+        WHEN (`d_827220437` = '303349821') THEN 'MARSH'
+        WHEN (`d_827220437` = '657167265') THEN 'SANF'
+        WHEN (`d_827220437` = '809703864') THEN 'UCHI'
+        WHEN (`d_827220437` = '472940358') THEN 'BSWH'
+        ELSE 'Other'
+      END AS `site`,
+      `d_564964481` AS `birth_month`
+    FROM `FlatConnect.participants_JP`
+    WHERE (NOT((`d_471593703` IS NULL)))
+  ) `q01`
 ) `q01`
-GROUP BY `period_start`, `d_827220437`, `d_564964481`
+GROUP BY `period_start`, `site`, `birth_month`
 ORDER BY `period_start`
 Job complete
-Billed: 0 B
+Billed: 10.49 MB
 Downloading first chunk of data.
 First chunk includes all requested rows.
 # A tibble: 747 × 4
-   period_start        site      birth_month num_records
-   <dttm>              <chr>     <chr>             <int>
- 1 2022-05-29 00:00:00 531629870 03                    1
- 2 2022-05-29 00:00:00 303349821 05                    1
- 3 2022-05-29 00:00:00 303349821 01                    2
- 4 2022-05-29 00:00:00 531629870 11                    1
- 5 2022-05-29 00:00:00 303349821 08                    1
- 6 2022-05-29 00:00:00 531629870 04                    1
- 7 2022-05-29 00:00:00 531629870 10                    1
- 8 2022-06-05 00:00:00 657167265 NA                    1
- 9 2022-06-05 00:00:00 657167265 01                    2
-10 2022-06-05 00:00:00 548392715 07                    1
+   period_start        site  birth_month num_records
+   <dttm>              <chr> <chr>             <int>
+ 1 2022-05-29 00:00:00 HP    03                    1
+ 2 2022-05-29 00:00:00 MARSH 05                    1
+ 3 2022-05-29 00:00:00 MARSH 01                    2
+ 4 2022-05-29 00:00:00 HP    11                    1
+ 5 2022-05-29 00:00:00 MARSH 08                    1
+ 6 2022-05-29 00:00:00 HP    04                    1
+ 7 2022-05-29 00:00:00 HP    10                    1
+ 8 2022-06-05 00:00:00 SANF  NA                    1
+ 9 2022-06-05 00:00:00 SANF  01                    2
+10 2022-06-05 00:00:00 HF    07                    1
 # ℹ 737 more rows
 # ℹ Use `print(n = ...)` to see more rows
 ```
