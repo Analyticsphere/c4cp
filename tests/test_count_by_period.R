@@ -45,3 +45,15 @@ quarterly_counts <- count_by_period(
 )
 quarterly_counts_local <- quarterly_counts %>% collect()
 print(quarterly_counts_local)
+
+
+weekly_counts_by_site_region <- count_by_period(
+  tbl = your_table,
+  date_col = "d_471593703",
+  period = "week",
+  week_start = "SUNDAY",
+  date_type = "string",
+  group_vars = c("d_827220437", "d_564964481")
+)
+weekly_counts_by_site_region_local <- weekly_counts_by_site_region %>% collect()
+print(weekly_counts_by_site_region_local)
