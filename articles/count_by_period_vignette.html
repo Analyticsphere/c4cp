@@ -105,8 +105,9 @@ dataset.</p>
 </h2>
 <p>Use the tbl() function from dbplyr to reference your BigQuery
 table.</p>
-<pre><code><span><span class="co"># Reference the 'participants_JP' table in the 'FlatConnect' dataset</span></span>
-<span><span class="va">your_table</span> <span class="op">&lt;-</span> <span class="fu">tbl</span><span class="op">(</span><span class="va">con</span>, <span class="st">"FlatConnect.participants_JP"</span><span class="op">)</span></span></code></pre>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Reference the 'participants_JP' table in the 'FlatConnect' dataset</span></span>
+<span><span class="va">your_table</span> <span class="op">&lt;-</span> <span class="fu">tbl</span><span class="op">(</span><span class="va">con</span>, <span class="st">"FlatConnect.participants_JP"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="aggregating-counts-by-week">Aggregating Counts by Week<a class="anchor" aria-label="anchor" href="#aggregating-counts-by-week"></a>
@@ -130,43 +131,50 @@ Monday (default setting).</p>
 <div class="section level5">
 <h5 id="example-output">Example Output:<a class="anchor" aria-label="anchor" href="#example-output"></a>
 </h5>
-<table class="table">
-<thead><tr class="header">
-<th><strong>period_start</strong></th>
-<th><strong>num_records</strong></th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>2021-07-19 00:00:00</td>
-<td>10</td>
-</tr>
-<tr class="even">
-<td>2021-07-26 00:00:00</td>
-<td>15</td>
-</tr>
-<tr class="odd">
-<td>2021-08-02 00:00:00</td>
-<td>20</td>
-</tr>
-<tr class="even">
-<td>…</td>
-<td>…</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># A tibble: 109 × 2</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>   period_start        num_records</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>   <span class="sc">&lt;</span>dttm<span class="sc">&gt;</span>                    <span class="er">&lt;</span>int<span class="sc">&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a> <span class="dv">1</span> <span class="dv">2022-05-30</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>           <span class="dv">8</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a> <span class="dv">2</span> <span class="dv">2022-06-06</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">15</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a> <span class="dv">3</span> <span class="dv">2022-06-13</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">31</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a> <span class="dv">4</span> <span class="dv">2022-06-20</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>           <span class="dv">7</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a> <span class="dv">5</span> <span class="dv">2022-06-27</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">14</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a> <span class="dv">6</span> <span class="dv">2022-07-04</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">30</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a> <span class="dv">7</span> <span class="dv">2022-07-11</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">26</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a> <span class="dv">8</span> <span class="dv">2022-07-18</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">10</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a> <span class="dv">9</span> <span class="dv">2022-07-25</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">12</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="dv">10</span> <span class="dv">2022-08-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>           <span class="dv">2</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co"># ℹ 99 more rows</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co"># ℹ Use `print(n = ...)` to see more rows</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="show-the-sql-query-that-was-generated">Show the SQL Query that was Generated<a class="anchor" aria-label="anchor" href="#show-the-sql-query-that-was-generated"></a>
+</h4>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">weekly_counts</span> <span class="op">%&gt;%</span> <span class="fu">show_query</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="op">&lt;</span>SQL<span class="op">&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="kw">SELECT</span> `period_start`, <span class="fu">count</span>(<span class="op">*</span>) <span class="kw">AS</span> `num_records`</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="kw">FROM</span> (</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="kw">SELECT</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>    `d_471593703`,</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>    TIMESTAMP_TRUNC(<span class="fu">CAST</span>(`d_471593703` <span class="kw">AS</span> <span class="dt">TIMESTAMP</span>), WEEK(MONDAY)) <span class="kw">AS</span> `period_start`</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>  <span class="kw">FROM</span> `FlatConnect.participants_JP`</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>  <span class="kw">WHERE</span> (<span class="kw">NOT</span>((`d_471593703` <span class="kw">IS</span> <span class="kw">NULL</span>)))</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>) `q01`</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> `period_start`</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> `period_start`</span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="aggregating-counts-by-month">Aggregating Counts by Month<a class="anchor" aria-label="anchor" href="#aggregating-counts-by-month"></a>
 </h2>
 <p>Aggregate the number of records by month.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Aggregate counts by month</span></span>
 <span><span class="va">monthly_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/count_by_period.html">count_by_period</a></span><span class="op">(</span></span>
 <span>  tbl <span class="op">=</span> <span class="va">your_table</span>,</span>
 <span>  date_col <span class="op">=</span> <span class="va">d_471593703</span>,</span>
-<span>  period <span class="op">=</span> <span class="st">"month"</span>,</span>
-<span>  date_type <span class="op">=</span> <span class="st">"string"</span></span>
+<span>  period <span class="op">=</span> <span class="st">"month"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Collect the results into R</span></span>
@@ -177,43 +185,33 @@ Monday (default setting).</p>
 <div class="section level5">
 <h5 id="example-output-1">Example Output:<a class="anchor" aria-label="anchor" href="#example-output-1"></a>
 </h5>
-<table class="table">
-<thead><tr class="header">
-<th><strong>period_start</strong></th>
-<th><strong>num_records</strong></th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>2021-07-01 00:00:00</td>
-<td>25</td>
-</tr>
-<tr class="even">
-<td>2021-08-01 00:00:00</td>
-<td>30</td>
-</tr>
-<tr class="odd">
-<td>2021-09-01 00:00:00</td>
-<td>35</td>
-</tr>
-<tr class="even">
-<td>…</td>
-<td>…</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># A tibble: 29 × 2</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>   period_start        num_records</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>   <span class="sc">&lt;</span>dttm<span class="sc">&gt;</span>                    <span class="er">&lt;</span>int<span class="sc">&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a> <span class="dv">1</span> <span class="dv">2022-06-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">70</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a> <span class="dv">2</span> <span class="dv">2022-07-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">83</span></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a> <span class="dv">3</span> <span class="dv">2022-08-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">29</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a> <span class="dv">4</span> <span class="dv">2022-09-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">48</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a> <span class="dv">5</span> <span class="dv">2022-10-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">65</span></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a> <span class="dv">6</span> <span class="dv">2022-11-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>         <span class="dv">171</span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a> <span class="dv">7</span> <span class="dv">2022-12-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>         <span class="dv">192</span></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a> <span class="dv">8</span> <span class="dv">2023-01-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">20</span></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a> <span class="dv">9</span> <span class="dv">2023-02-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">31</span></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a><span class="dv">10</span> <span class="dv">2023-03-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">93</span></span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a><span class="co"># ℹ 19 more rows</span></span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a><span class="co"># ℹ Use `print(n = ...)` to see more rows</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="aggregating-counts-by-quarter">Aggregating Counts by Quarter<a class="anchor" aria-label="anchor" href="#aggregating-counts-by-quarter"></a>
 </h2>
 <p>Aggregate the number of records by quarter.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Aggregate counts by quarter</span></span>
 <span><span class="va">quarterly_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/count_by_period.html">count_by_period</a></span><span class="op">(</span></span>
 <span>  tbl <span class="op">=</span> <span class="va">your_table</span>,</span>
 <span>  date_col <span class="op">=</span> <span class="va">d_471593703</span>,</span>
-<span>  period <span class="op">=</span> <span class="st">"quarter"</span>,</span>
-<span>  date_type <span class="op">=</span> <span class="st">"string"</span></span>
+<span>  period <span class="op">=</span> <span class="st">"quarter"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Collect the results into R</span></span>
@@ -224,30 +222,20 @@ Monday (default setting).</p>
 <div class="section level5">
 <h5 id="example-output-2">Example Output:<a class="anchor" aria-label="anchor" href="#example-output-2"></a>
 </h5>
-<table class="table">
-<thead><tr class="header">
-<th><strong>period_start</strong></th>
-<th><strong>num_records</strong></th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>2021-07-01 00:00:00</td>
-<td>50</td>
-</tr>
-<tr class="even">
-<td>2021-10-01 00:00:00</td>
-<td>65</td>
-</tr>
-<tr class="odd">
-<td>2022-01-01 00:00:00</td>
-<td>70</td>
-</tr>
-<tr class="even">
-<td>…</td>
-<td>…</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># A tibble: 11 × 2</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>   period_start        num_records</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>   <span class="sc">&lt;</span>dttm<span class="sc">&gt;</span>                    <span class="er">&lt;</span>int<span class="sc">&gt;</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a> <span class="dv">1</span> <span class="dv">2022-04-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">70</span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a> <span class="dv">2</span> <span class="dv">2022-07-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>         <span class="dv">160</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a> <span class="dv">3</span> <span class="dv">2022-10-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>         <span class="dv">428</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a> <span class="dv">4</span> <span class="dv">2023-01-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>         <span class="dv">144</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a> <span class="dv">5</span> <span class="dv">2023-04-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>         <span class="dv">141</span></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a> <span class="dv">6</span> <span class="dv">2023-07-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>         <span class="dv">114</span></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a> <span class="dv">7</span> <span class="dv">2023-10-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>         <span class="dv">191</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a> <span class="dv">8</span> <span class="dv">2024-01-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>         <span class="dv">172</span></span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a> <span class="dv">9</span> <span class="dv">2024-04-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>         <span class="dv">115</span></span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a><span class="dv">10</span> <span class="dv">2024-07-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>         <span class="dv">121</span></span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a><span class="dv">11</span> <span class="dv">2024-10-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>           <span class="dv">2</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -255,14 +243,13 @@ Monday (default setting).</p>
 </h2>
 <p>Customize the aggregation to have weeks start on Sunday instead of
 the default Monday.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Aggregate counts by week starting on Sunday</span></span>
 <span><span class="va">weekly_sunday_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/count_by_period.html">count_by_period</a></span><span class="op">(</span></span>
 <span>  tbl <span class="op">=</span> <span class="va">your_table</span>,</span>
 <span>  date_col <span class="op">=</span> <span class="va">d_471593703</span>,</span>
 <span>  period <span class="op">=</span> <span class="st">"week"</span>,</span>
-<span>  week_start <span class="op">=</span> <span class="st">"SUNDAY"</span>,</span>
-<span>  date_type <span class="op">=</span> <span class="st">"string"</span></span>
+<span>  week_start <span class="op">=</span> <span class="st">"SUNDAY"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Collect the results into R</span></span>
@@ -273,30 +260,21 @@ the default Monday.</p>
 <div class="section level5">
 <h5 id="example-output-3">Example Output<a class="anchor" aria-label="anchor" href="#example-output-3"></a>
 </h5>
-<table class="table">
-<thead><tr class="header">
-<th><strong>period_start</strong></th>
-<th>num_records</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>2021-07-18 00:00:00</td>
-<td>8</td>
-</tr>
-<tr class="even">
-<td>2021-07-25 00:00:00</td>
-<td>12</td>
-</tr>
-<tr class="odd">
-<td>2021-08-0100:00:00</td>
-<td>18</td>
-</tr>
-<tr class="even">
-<td>…</td>
-<td>…</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co"># A tibble: 109 × 2</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>   period_start        num_records</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>   <span class="sc">&lt;</span>dttm<span class="sc">&gt;</span>                    <span class="er">&lt;</span>int<span class="sc">&gt;</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a> <span class="dv">1</span> <span class="dv">2022-05-29</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>           <span class="dv">8</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a> <span class="dv">2</span> <span class="dv">2022-06-05</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">15</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a> <span class="dv">3</span> <span class="dv">2022-06-12</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">31</span></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a> <span class="dv">4</span> <span class="dv">2022-06-19</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>           <span class="dv">7</span></span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a> <span class="dv">5</span> <span class="dv">2022-06-26</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">14</span></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a> <span class="dv">6</span> <span class="dv">2022-07-03</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">30</span></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a> <span class="dv">7</span> <span class="dv">2022-07-10</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">26</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a> <span class="dv">8</span> <span class="dv">2022-07-17</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">10</span></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a> <span class="dv">9</span> <span class="dv">2022-07-24</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>          <span class="dv">12</span></span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="dv">10</span> <span class="dv">2022-07-31</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>           <span class="dv">2</span></span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a><span class="co"># ℹ 99 more rows</span></span>
+<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a><span class="co"># ℹ Use `print(n = ...)` to see more rows</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
