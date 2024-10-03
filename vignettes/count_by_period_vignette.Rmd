@@ -14,14 +14,15 @@ This vignette demonstrates how to use the `count_by_period` function to aggregat
 Ensure you have the following packages installed and loaded:
 
 ```r
-install.packages(c("dplyr", "dbplyr", "bigrquery", "DBI", "rlang"))
+install.packages(c("dplyr", "dbplyr", "bigrquery", "DBI", "rlang", "devtools"))
+devtools::install_github("Analyticsphere/c4cp")
 
 # Load the necessary libraries:
 library(dplyr)
 library(dbplyr)
 library(bigrquery)
 library(DBI)
-library(rlang)
+library(c4cp)
 ```
 
 ## Establishing a Connection to BigQuery
